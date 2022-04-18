@@ -344,6 +344,7 @@ Function InitItemTemplates()
 	it = CreateItemTemplate("Document SCP-457 Page 2/2","paper","GFX\items\paper.x","GFX\items\INVpaper.jpg","GFX\items\doc457_2.jpg", 0.003) : it\sound = 0
 	CreateItemTemplate("SCP-198","scp198","GFX\items\scp198.b3d","GFX\items\INVscp198.jpg","",0.04)
 	CreateItemTemplate("SCP-109","scp109","GFX\items\scp109.b3d","GFX\items\INVscp109.jpg","",0.0009)
+	CreateItemTemplate("SCP-207","scp207","GFX\items\scp207.b3d","GFX\items\INV207.png","",0.15)
 	it = CreateItemTemplate("Document SCP-109", "paper", "GFX\items\paper.x", "GFX\items\INVpaper.jpg", "GFX\items\doc109.jpg", 0.003) : it\sound = 0
 ;	CreateItemTemplate("Silencer", "silencer", "GFX\weapons\Silencer.b3d","GFX\weapons\INVsilencer.jpg","",0.02)
 	
@@ -714,7 +715,12 @@ Function PickItem(item.Items)
 					Msg = item\itemtemplate\name+" has been picked up."
 					MsgTimer = 70 * 5
 					
-					If item\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX[item\itemtemplate\sound])
+					If item\itemtemplate\name = "SCP-207" Then
+						item\itemtemplate\sound = 4
+						PlaySound_Strict(PickSFX[item\itemtemplate\sound])
+					Else
+						If item\itemtemplate\sound <> 66 Then PlaySound_Strict(PickSFX[item\itemtemplate\sound])
+					EndIf
 					item\Picked = True
 					item\Dropped = -1
 					

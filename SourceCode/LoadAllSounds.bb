@@ -70,7 +70,7 @@ Function LoadAllSounds()
 	ElevatorBeepSFX = LoadSound_Strict("SFX\General\Elevator\Beep.ogg") 
 	ElevatorMoveSFX = LoadSound_Strict("SFX\General\Elevator\Moving.ogg") 
 	
-	For i = 0 To 3
+	For i = 0 To 4
 		PickSFX[i] = LoadSound_Strict("SFX\Interact\PickItem" + i + ".ogg")
 	Next
 	

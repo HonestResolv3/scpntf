@@ -1072,6 +1072,18 @@ Function UpdateGUI()
 						RemoveItem(SelectedItem)
 					EndIf
 					;[End Block]
+				Case "scp207"
+					If CanUseItem(False, False, True) Then
+						SelectedItem\state = Min(SelectedItem\state+(FPSfactor/2),100)
+						CurrSpeed = CurveValue(0, CurrSpeed, 10.0)
+						If SelectedItem\state = 100 Then
+							SuperMan = True
+							InfiniteStamina = True
+							Msg = "You drank a bottle of SCP-207 and you feel refreshed"
+							MsgTimer = 70*5
+							RemoveItem(SelectedItem)
+						EndIf
+					EndIf
 				Case "firstaid", "finefirstaid", "firstaid2"
 					;[Block]
 					If psp\Health = 100 Then
@@ -2359,10 +2371,14 @@ Function DrawGUI()
 		If Stamina < 100.0 And PlayerRoom\RoomTemplate\Name <> "pocketdimension" Then
 			y = opt\GraphicHeight - 55
 			x = (opt\GraphicWidth / 2) - (width / 2) + 20
-			If Stamina <= 20.0 Then
-				Color 255, 0, 0
+			If InfiniteStamina Then
+				Color 0, 255, 0
 			Else
-				Color 255, 255, 255
+				If Stamina <= 20.0 Then
+					Color 255, 0, 0
+				Else
+					Color 255, 255, 255
+				EndIf
 			EndIf
 			Rect (x, y, width, height, False)
 			For i = 1 To Int(((width - 2) * (Stamina / 100.0)) / 10)
@@ -2372,10 +2388,14 @@ Function DrawGUI()
 			Color 0, 0, 0
 			Rect(x - 50, y, 30, 30)
 			
-			If Stamina <= 0.0 Then
-				Color 255, 0, 0
+			If InfiniteStamina Then
+				Color 0, 255, 0
 			Else
-				Color 255, 255, 255
+				If Stamina <= 0.0 Then
+					Color 255, 0, 0
+				Else
+					Color 255, 255, 255
+				EndIf
 			EndIf
 			Rect(x - 50 - 1, y - 1, 30 + 2, 30 + 2, False)
 			If Crouch Then
@@ -2864,6 +2884,17 @@ Function DrawGUI()
 					
 					DrawImage(SelectedItem\itemtemplate\img, opt\GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\img) / 2, opt\GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\img) / 2)
 					;[End Block]
+				Case "scp207"
+					DrawImage(SelectedItem\itemtemplate\invimg, opt\GraphicWidth / 2 - ImageWidth(SelectedItem\itemtemplate\invimg) / 2, opt\GraphicHeight / 2 - ImageHeight(SelectedItem\itemtemplate\invimg) / 2)
+							
+					width% = 300
+					height% = 20
+					x% = opt\GraphicWidth / 2 - width / 2
+					y% = opt\GraphicHeight / 2 + 80
+					Rect(x, y, width+4, height, False)
+					For  i% = 1 To Int((width - 2) * (SelectedItem\state / 100.0) / 10)
+						DrawImage(BlinkMeterIMG, x + 3 + 10 * (i - 1), y + 3)
+					Next
 				Case "scp1025"
 					;[Block]
 					If SelectedItem\itemtemplate\img=0 Then
@@ -4352,13 +4383,13 @@ Function UpdateMenu()
 ;			
 ;			If AchievementsMenu>0 Then
 ;				If AchievementsMenu <= Floor(Float(MAXACHIEVEMENTS-1)/12.0) Then 
-;					If DrawButton(x+341*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, "â?¶", 2) Then
+;					If DrawButton(x+341*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, "ï¿½?ï¿½", 2) Then
 ;						AchievementsMenu = AchievementsMenu+1
 ;						ShouldDeleteGadgets=True
 ;					EndIf
 ;				EndIf
 ;				If AchievementsMenu > 1 Then
-;					If DrawButton(x+41*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, "â??", 2) Then
+;					If DrawButton(x+41*MenuScale, y + 344*MenuScale, 50*MenuScale, 60*MenuScale, "ï¿½??", 2) Then
 ;						AchievementsMenu = AchievementsMenu-1
 ;						ShouldDeleteGadgets=True
 ;					EndIf
